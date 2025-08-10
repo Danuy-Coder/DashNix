@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iDraft - Admin Dashboard</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1553095066-5014bc7b7f2d?q=80&w=2071&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(30, 30, 40, 0.5); /* Sedikit lebih gelap untuk kontras */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.5); }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="text-white">
+
+    <div class="relative min-h-screen lg:flex">
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-20 lg:hidden hidden"></div>
+
+        <aside id="sidebar" class="w-64 glass-card p-6 flex-col fixed inset-y-0 left-0 transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out z-30 flex">
+            <div class="flex-grow">
+                <div class="text-2xl font-bold mb-10 flex items-center gap-3">
+                    <i class="fas fa-drafting-compass text-purple-400"></i>
+                    <span>iDraft</span>
+                </div>
+                
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Menu</h3>
+                <nav class="flex flex-col space-y-2">
+                    <a href="#" class="relative bg-purple-600/30 text-white font-semibold py-2.5 px-4 rounded-lg flex items-center transition-all duration-200 ease-in-out">
+                        <span class="absolute left-0 top-0 h-full w-1 bg-purple-400 rounded-r-full"></span>
+                        <i class="fas fa-tachometer-alt w-8 text-center text-lg"></i> Dashboard
+                    </a>
+                    <a href="#" class="text-gray-300 hover:bg-white/10 hover:text-white py-2.5 px-4 rounded-lg flex items-center transition-all duration-200 ease-in-out group">
+                        <i class="fas fa-users w-8 text-center text-lg text-gray-400 group-hover:text-white transition-colors"></i> Users
+                    </a>
+                    <a href="#" class="text-gray-300 hover:bg-white/10 hover:text-white py-2.5 px-4 rounded-lg flex items-center transition-all duration-200 ease-in-out group">
+                        <i class="fas fa-box-open w-8 text-center text-lg text-gray-400 group-hover:text-white transition-colors"></i> Products
+                    </a>
+                     <a href="#" class="text-gray-300 hover:bg-white/10 hover:text-white py-2.5 px-4 rounded-lg flex items-center transition-all duration-200 ease-in-out group">
+                        <i class="fas fa-chart-bar w-8 text-center text-lg text-gray-400 group-hover:text-white transition-colors"></i> Reports
+                    </a>
+                </nav>
+                
+                <hr class="my-6 border-white/10">
+
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Integrations</h3>
+                 <a href="#" class="text-gray-300 hover:bg-white/10 hover:text-white py-2.5 px-4 rounded-lg flex items-center transition-all duration-200 ease-in-out group">
+                    <i class="fab fa-slack w-8 text-center text-lg text-gray-400 group-hover:text-white transition-colors"></i> Slack
+                </a>
+                 <a href="#" class="text-gray-300 hover:bg-white/10 hover:text-white py-2.5 px-4 rounded-lg flex items-center transition-all duration-200 ease-in-out group">
+                    <i class="fas fa-pen-nib w-8 text-center text-lg text-gray-400 group-hover:text-white transition-colors"></i> Notion
+                </a>
+            </div>
+            
+            <div>
+                 <hr class="my-6 border-white/10">
+                 <a href="#" class="text-gray-300 hover:bg-white/10 hover:text-white py-2.5 px-4 rounded-lg flex items-center transition-all duration-200 ease-in-out group">
+                    <i class="fas fa-cog w-8 text-center text-lg text-gray-400 group-hover:text-white transition-colors"></i> Settings
+                </a>
+                <a href="#" class="text-gray-300 hover:bg-white/10 hover:text-white py-2.5 px-4 rounded-lg flex items-center transition-all duration-200 ease-in-out group">
+                    <i class="fas fa-sign-out-alt w-8 text-center text-lg text-gray-400 group-hover:text-white transition-colors"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <div class="flex-1">
+            <main class="overflow-y-auto h-screen p-4">
+                <header class="flex justify-between items-center p-4 glass-card rounded-2xl mb-6">
+                    <div class="flex items-center">
+                        <button id="sidebar-toggle" class="text-white p-2 rounded-md lg:hidden mr-4"><i class="fas fa-bars text-xl"></i></button>
+                        <h1 class="text-xl md:text-2xl font-bold">Hi, Dilan!</h1>
+                    </div>
+                    <div class="flex items-center space-x-2 md:space-x-4">
+                        <button id="add-task-btn" class="bg-white text-black font-semibold py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors duration-200 flex items-center"><i class="fas fa-plus mr-2"></i> Add Task</button>
+                        <button class="hover:bg-white/20 p-2 rounded-full"><i class="fas fa-search"></i></button>
+                        <button class="hover:bg-white/20 p-2 rounded-full"><i class="fas fa-bell"></i></button>
+                        <img src="https://i.pravatar.cc/40?u=dilan" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-white/50">
+                    </div>
+                </header>
+
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="glass-card rounded-2xl p-6 flex items-center space-x-4">
+                            <div class="bg-blue-500/30 p-4 rounded-full"><i class="fas fa-users fa-2x text-blue-300"></i></div>
+                            <div><p class="text-2xl font-bold">1,257</p><p class="text-gray-300">Total Users</p></div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 flex items-center space-x-4">
+                            <div class="bg-green-500/30 p-4 rounded-full"><i class="fas fa-dollar-sign fa-2x text-green-300"></i></div>
+                            <div><p class="text-2xl font-bold">$34,890</p><p class="text-gray-300">Monthly Sales</p></div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 flex items-center space-x-4">
+                            <div class="bg-yellow-500/30 p-4 rounded-full"><i class="fas fa-shopping-cart fa-2x text-yellow-300"></i></div>
+                            <div><p class="text-2xl font-bold">203</p><p class="text-gray-300">New Orders</p></div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 flex items-center space-x-4">
+                            <div class="bg-red-500/30 p-4 rounded-full"><i class="fas fa-exclamation-triangle fa-2x text-red-300"></i></div>
+                            <div><p class="text-2xl font-bold">12</p><p class="text-gray-300">Pending Issues</p></div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 glass-card rounded-2xl p-6">
+                            <h3 class="font-semibold text-xl mb-4">Revenue Overview</h3>
+                            <div class="h-64">
+                                <svg class="w-full h-full" viewBox="0 0 500 200">
+                                    <line stroke="rgba(255,255,255,0.1)" x1="0" y1="0" x2="500" y2="0"/>
+                                    <line stroke="rgba(255,255,255,0.1)" x1="0" y1="50" x2="500" y2="50"/>
+                                    <line stroke="rgba(255,255,255,0.1)" x1="0" y1="100" x2="500" y2="100"/>
+                                    <line stroke="rgba(255,255,255,0.1)" x1="0" y1="150" x2="500" y2="150"/>
+                                    <line stroke="rgba(255,255,255,0.2)" x1="0" y1="200" x2="500" y2="200"/>
+                                    <rect x="30" y="120" width="40" height="80" fill="rgba(139, 92, 246, 0.6)"></rect>
+                                    <rect x="100" y="80" width="40" height="120" fill="rgba(139, 92, 246, 0.6)"></rect>
+                                    <rect x="170" y="150" width="40" height="50" fill="rgba(139, 92, 246, 0.6)"></rect>
+                                    <rect x="240" y="50" width="40" height="150" fill="rgba(139, 92, 246, 0.8)"></rect>
+                                    <rect x="310" y="100" width="40" height="100" fill="rgba(139, 92, 246, 0.6)"></rect>
+                                    <rect x="380" y="140" width="40" height="60" fill="rgba(139, 92, 246, 0.6)"></rect>
+                                    <text x="40" y="215" fill="white" font-size="12">Jan</text>
+                                    <text x="110" y="215" fill="white" font-size="12">Feb</text>
+                                    <text x="180" y="215" fill="white" font-size="12">Mar</text>
+                                    <text x="250" y="215" fill="white" font-size="12">Apr</text>
+                                    <text x="320" y="215" fill="white" font-size="12">Mei</text>
+                                    <text x="390" y="215" fill="white" font-size="12">Jun</text>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6">
+                            <h3 class="font-semibold text-xl mb-4">Recent Activity</h3>
+                            <ul class="space-y-4">
+                                <li class="flex items-start space-x-3"><div class="bg-purple-500/30 p-2 rounded-full mt-1"><i class="fas fa-user-plus text-purple-300"></i></div><div><p>New user <span class="font-semibold">Budi Santoso</span> has registered.</p><p class="text-xs text-gray-400">15 minutes ago</p></div></li>
+                                <li class="flex items-start space-x-3"><div class="bg-green-500/30 p-2 rounded-full mt-1"><i class="fas fa-check text-green-300"></i></div><div><p>Order <span class="font-semibold">#8942</span> has been completed.</p><p class="text-xs text-gray-400">1 hour ago</p></div></li>
+                                <li class="flex items-start space-x-3"><div class="bg-yellow-500/30 p-2 rounded-full mt-1"><i class="fas fa-server text-yellow-300"></i></div><div><p>Server performance is reaching capacity.</p><p class="text-xs text-gray-400">3 hours ago</p></div></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-6">
+                         <div class=" justify-between items-center mb-4">
+                            <h3 class="font-semibold text-xl">User Management</h3>
+                            <br /><div class="relative"><input type="text" placeholder="Search user..." class="bg-white/10 border border-white/20 rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-purple-500"><i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i></div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="border-b border-white/20"><tr><th class="p-4">User</th><th class="p-4">Role</th><th class="p-4">Status</th><th class="p-4 hidden md:table-cell">Join Date</th><th class="p-4">Actions</th></tr></thead>
+                                <tbody class="divide-y divide-white/10">
+                                    <tr><td class="p-4 flex items-center space-x-3"><img src="https://i.pravatar.cc/40?u=budi" class="w-10 h-10 rounded-full"><span>Budi Santoso</span></td><td class="p-4">Admin</td><td class="p-4"><span class="bg-green-500/50 text-green-200 py-1 px-3 rounded-full text-xs">Active</span></td><td class="p-4 hidden md:table-cell">2025-08-01</td><td class="p-4 space-x-2"><button class="text-blue-300 hover:text-blue-100"><i class="fas fa-edit"></i></button><button class="delete-btn text-red-400 hover:text-red-200"><i class="fas fa-trash"></i></button></td></tr>
+                                    <tr><td class="p-4 flex items-center space-x-3"><img src="https://i.pravatar.cc/40?u=siti" class="w-10 h-10 rounded-full"><span>Siti Aminah</span></td><td class="p-4">Editor</td><td class="p-4"><span class="bg-green-500/50 text-green-200 py-1 px-3 rounded-full text-xs">Active</span></td><td class="p-4 hidden md:table-cell">2025-07-25</td><td class="p-4 space-x-2"><button class="text-blue-300 hover:text-blue-100"><i class="fas fa-edit"></i></button><button class="delete-btn text-red-400 hover:text-red-200"><i class="fas fa-trash"></i></button></td></tr>
+                                    <tr><td class="p-4 flex items-center space-x-3"><img src="https://i.pravatar.cc/40?u=agus" class="w-10 h-10 rounded-full"><span>Agus Setiawan</span></td><td class="p-4">Viewer</td><td class="p-4"><span class="bg-yellow-500/50 text-yellow-200 py-1 px-3 rounded-full text-xs">Inactive</span></td><td class="p-4 hidden md:table-cell">2025-06-12</td><td class="p-4 space-x-2"><button class="text-blue-300 hover:text-blue-100"><i class="fas fa-edit"></i></button><button class="delete-btn text-red-400 hover:text-red-200"><i class="fas fa-trash"></i></button></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="flex justify-end items-center mt-4 space-x-2 text-sm"><button class="py-2 px-3 bg-white/10 rounded-lg hover:bg-white/20 disabled:opacity-50" disabled>Previous</button><button class="py-2 px-4 bg-white/20 rounded-lg">1</button><button class="py-2 px-4 bg-white/10 rounded-lg hover:bg-white/20">2</button><button class="py-2 px-3 bg-white/10 rounded-lg hover:bg-white/20">Next</button></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // --- Sidebar Logic ---
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        }
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+
+        // --- SweetAlert for Deleting User ---
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.stopPropagation();
+                Swal.fire({
+                    title: 'Delete User?', text: "This action cannot be undone.", icon: 'warning',
+                    showCancelButton: true, confirmButtonText: 'Yes, delete!', cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#d33', background: 'rgba(31, 41, 55, 0.9)', color: '#ffffff',
+                    backdrop: `rgba(0,0,0,0.5) blur(5px)`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.closest('tr').remove();
+                        Swal.fire({
+                            title: 'Deleted!', text: 'The user has been removed.', icon: 'success',
+                            background: 'rgba(31, 41, 55, 0.9)', color: '#ffffff',
+                        });
+                    }
+                });
+            });
+        });
+
+        // --- SweetAlert Modal for Adding Task ---
+        const addTaskBtn = document.getElementById('add-task-btn');
+        addTaskBtn.addEventListener('click', function() {
+            Swal.fire({
+                title: 'Add a New Task',
+                html: `<input id="swal-input1" class="swal2-input" placeholder="Task Title" style="background-color: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);">
+                       <select id="swal-input2" class="swal2-input" style="background-color: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);"><option value="" style="color: black;">Assign to...</option><option value="Dilan" style="color: black;">Dilan</option><option value="Budi Santoso" style="color: black;">Budi Santoso</option><option value="Siti Aminah" style="color: black;">Siti Aminah</option></select>`,
+                confirmButtonText: 'Add Task', focusConfirm: false, background: 'rgba(31, 41, 55, 0.9)', color: '#ffffff',
+                preConfirm: () => {
+                    const title = document.getElementById('swal-input1').value;
+                    const assignee = document.getElementById('swal-input2').value;
+                    if (!title || !assignee) { Swal.showValidationMessage(`Please fill out all fields`); }
+                    return { title: title, assignee: assignee }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'success', title: 'Task Added!', text: `'${result.value.title}' assigned to ${result.value.assignee}.`,
+                        background: 'rgba(31, 41, 55, 0.9)', color: '#ffffff',
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
